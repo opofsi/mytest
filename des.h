@@ -3,7 +3,6 @@
 
 /** \file  my file
 */
-//my file
 
 #include <seckey.h>
 #include <secblock.h>
