@@ -4,8 +4,8 @@
 #include <iostream>
 #include <memory>
 #include <cstring>
-#include "md5.h"
-#include "des.h"
+#include <openssl/md5.h>
+#include <openssl/des.h>
 const unsigned char opera_salt[11] =
 {
         0x83, 0x7D, 0xFC, 0x0F, 0x8E, 0xB3, 0xE8, 0x69, 0x73, 0xAF, 0xFF
@@ -87,7 +87,7 @@ int main(int argc, char **argv)
                 //
                 memcpy(tmpBuffer, opera_salt, sizeof(opera_salt));
                 memcpy(tmpBuffer + sizeof(opera_salt), wandKey, DES_KEY_SZ);
-                MD5(tmpBuffer, sizeof(opera_salt) + DES_KEY_SZ, hashSignature1);
+                *MD5(tmpBuffer, sizeof(opera_salt) + DES_KEY_SZ, hashSignature1);
                 memcpy(tmpBuffer, hashSignature1, sizeof(hashSignature1));
                 memcpy(tmpBuffer + sizeof(hashSignature1),
                        opera_salt, sizeof(opera_salt));
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
                 // decrypt wand data in place using 3DES-CBC
                 // 
                 DES_ede3_cbc_encrypt(cryptoData, cryptoData, dataLength,
-                        &key_schedule1, &key_schedule2, &key_schedule3, &iVector, 0);
+                		&key_schedule1, &key_schedule2, &key_schedule3, &iVector, 0);
  
                 if(0x00 == *cryptoData || 0x08 == *cryptoData)
                 {
